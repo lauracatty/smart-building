@@ -1,0 +1,15 @@
+/Users/laura/Documents/EclipseProject/src/main/java/building/HVACConditionRequestOrBuilder.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/AdjustTemperatureResponseOrBuilder.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/AdjustTemperatureResponse.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/ClimateControlService.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/CurrentTemperatureResponse.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/CurrentTemperatureRequestOrBuilder.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/HVACConditionRequest.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/HVACConditionResponseOrBuilder.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/AdjustTemperatureRequest.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/AdjustTemperatureRequestOrBuilder.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/HVACConditionResponse.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/BuildingServiceGrpc.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/CurrentTemperatureRequest.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/CurrentTemperatureResponseOrBuilder.java
+/Users/laura/Documents/EclipseProject/src/main/java/building/BuildingServiceImpl.java
