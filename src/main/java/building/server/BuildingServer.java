@@ -9,7 +9,7 @@ import io.grpc.ServerBuilder;
 public class BuildingServer {
 
 	public static void main(String[] args) throws IOException {
-		Server s = ServerBuilder.forPort(5000).addService(new BuildingServiceImpl()).build();
+		Server s = ServerBuilder.forPort(50051).addService(new BuildingServiceImpl()).build();
 	s.start();
 	try {
 		s.awaitTermination();

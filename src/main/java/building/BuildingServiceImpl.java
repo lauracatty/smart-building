@@ -11,8 +11,8 @@ public class BuildingServiceImpl extends BuildingServiceImplBase{
 		//always takes two arguments: first is the request, second is the streamobserver (from the Grpc itself - takes adjustt
 		//temperature response as a method. We use the request to get data and create the response object
 	
-		System.out.println("Request Area ID"+request.getAreaId());
-		System.out.println("Request Temperature "+ request.getTemperature());
+		System.out.println("In which Room would you like to change temperature?"+request.getAreaId());
+		System.out.println("Please enter temperature in Celsius "+ request.getTemperature());
 		
 		//responseobjecet - with newBuilder and set the properties you need (true and false with error message if needed)
 
@@ -30,12 +30,47 @@ public class BuildingServiceImpl extends BuildingServiceImplBase{
 	public void currentTemperature(CurrentTemperatureRequest request,
 			StreamObserver<CurrentTemperatureResponse> responseObserver) {
 	
+		System.out.println("Fetching current temperature for Room: " + request.getAreaId());
+
+        // These values might come from some data source or sensor in real application
+        float temperature = 24.5f;
+        float humidity = 30.5f;
+        int airQualityIndex = 45;
+
+        CurrentTemperatureResponse response = CurrentTemperatureResponse.newBuilder()
+            .setTemperature(temperature)
+            .setHumidity(humidity)
+            .setAirQualityIndex(airQualityIndex)
+            .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    
 		
 	}
 
 	@Override
 	public void getHVACCondition(HVACConditionRequest request, StreamObserver<HVACConditionResponse> responseObserver) {
 
+		   System.out.println("Fetching HVAC condition for Room: " + request.getAreaId());
+
+	        // These values might come from some data source or HVAC system in real application
+	        boolean status = true;
+	        float currentTemperature = 24.5f;
+	        float setTemperature = 22.5f;
+	        String errorCode = "NO_ERROR";
+
+	        HVACConditionResponse response = HVACConditionResponse.newBuilder()
+	            .setStatus(status)
+	            .setCurrentTemperature(currentTemperature)
+	            .setSetTemperature(setTemperature)
+	            .setErrorCode(errorCode)
+	            .build();
+
+	        responseObserver.onNext(response);
+	        responseObserver.onCompleted();
+		
+		
 	}
 	
 	
