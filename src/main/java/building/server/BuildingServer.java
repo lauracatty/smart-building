@@ -2,7 +2,7 @@ package building.server;
 
 import java.io.IOException;
 
-import building.BuildingServiceImpl;
+import building.climate_control.BuildingServiceImpl;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 

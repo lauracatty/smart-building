@@ -1,7 +1,7 @@
 syntax = "proto3";
 //adding option to generate multiple java files
 option java_multiple_files = true;
-package building;
+package building.climate_control;
 
 //message for adjusting the temperature
 message AdjustTemperatureRequest {

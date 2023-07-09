@@ -1,9 +1,9 @@
 package building.client;
 
-import building.*;
-import building.AdjustTemperatureRequest;
-import building.AdjustTemperatureResponse;
-import building.BuildingServiceGrpc;
+import building.climate_control.*;
+import building.climate_control.AdjustTemperatureRequest;
+import building.climate_control.AdjustTemperatureResponse;
+import building.climate_control.BuildingServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
