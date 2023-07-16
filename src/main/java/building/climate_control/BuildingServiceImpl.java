@@ -5,8 +5,16 @@ import building.climate_control.BuildingServiceGrpc.BuildingServiceImplBase;
 import io.grpc.stub.StreamObserver;
 
 public class BuildingServiceImpl extends BuildingServiceImplBase{
-//basic structure of grpc implementeation
+//basic structure of grpc implementeation - created variable for the database
+	ClimateControl climatecontrol; 
 	
+	//constructor - initiate DB
+	
+	public BuildingServiceImpl() {
+	super();
+	this.climatecontrol = new ClimateControl();
+}
+
 	@Override
 	public void adjustTemperature (AdjustTemperatureRequest request, StreamObserver <AdjustTemperatureResponse> responseObserver) {
 		//always takes two arguments: first is the request, second is the streamobserver (from the Grpc itself - takes adjustt
@@ -15,6 +23,8 @@ public class BuildingServiceImpl extends BuildingServiceImplBase{
 		System.out.println("In which Room would you like to change temperature?"+request.getAreaId());
 		System.out.println("Please enter temperature in Celsius "+ request.getTemperature());
 		
+		//how to use a database
+		this.climatecontrol.updateClimateCondition(request.getAreaId(),request.getTemperature());
 		//responseobjecet - with newBuilder and set the properties you need (true and false with error message if needed)
 
 		AdjustTemperatureResponse response= AdjustTemperatureResponse.newBuilder().setSuccess(true).build();
@@ -30,11 +40,14 @@ public class BuildingServiceImpl extends BuildingServiceImplBase{
 	@Override
 	public void currentTemperature(CurrentTemperatureRequest request,
 			StreamObserver<CurrentTemperatureResponse> responseObserver) {
+		
+		
 	
+		float temperature = this.climatecontrol.getTemperature(request.getAreaId());
 		System.out.println("Fetching current temperature for Room: " + request.getAreaId());
 
         // These values might come from some data source or sensor in real application
-        float temperature = 24.5f;
+		
         float humidity = 30.5f;
         int airQualityIndex = 45;
 
