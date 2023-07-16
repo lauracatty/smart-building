@@ -24,7 +24,7 @@ public class BuildingServiceImpl extends BuildingServiceImplBase{
 		System.out.println("Please enter temperature in Celsius "+ request.getTemperature());
 		
 		//how to use a database
-		this.climatecontrol.updateClimateCondition(request.getAreaId(),request.getTemperature());
+		this.climatecontrol.updateTemperature(request.getAreaId(), request.getTemperature());
 		//responseobjecet - with newBuilder and set the properties you need (true and false with error message if needed)
 
 		AdjustTemperatureResponse response= AdjustTemperatureResponse.newBuilder().setSuccess(true).build();

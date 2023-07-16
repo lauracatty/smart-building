@@ -1,62 +1,92 @@
 package building.client;
 
 import building.climate_control.*;
-import building.climate_control.AdjustTemperatureRequest;
-import building.climate_control.AdjustTemperatureResponse;
-import building.climate_control.BuildingServiceGrpc;
+import building.illumination_control.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-import java.util.logging.Logger;
-
 public class BuildingController {
 
-    private static final Logger logger = Logger.getLogger(BuildingController.class.getName());
+    public static void main(String[] args) {
+        // Create a channel for climate control service
+        ManagedChannel climateControlChannel = ManagedChannelBuilder.forAddress("localhost", 50054)
+                .usePlaintext()
+                .build();
 
-    public static void main (String[] args) {
+        // Create a blocking stub for climate control service
+        BuildingServiceGrpc.BuildingServiceBlockingStub climateControlStub =
+                BuildingServiceGrpc.newBlockingStub(climateControlChannel);
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress ("localhost", 50051).usePlaintext().build();
+        // Call climate control methods
 
-        BuildingServiceGrpc.BuildingServiceBlockingStub stub = BuildingServiceGrpc.newBlockingStub(channel);
+        AdjustTemperatureRequest climateControlRequest = AdjustTemperatureRequest.newBuilder()
+                .setAreaId("Room1")
+                .setTemperature(22)
+                .build();
+        AdjustTemperatureResponse climateControlResponse = climateControlStub.adjustTemperature(climateControlRequest);
 
-        AdjustTemperatureRequest request = AdjustTemperatureRequest.newBuilder().setAreaId("Room1").setTemperature(22).build();
-        AdjustTemperatureResponse response = stub.adjustTemperature(request);
+        System.out.println("Climate control adjustment was successful: " + climateControlResponse.getSuccess());
 
-        //Printing adjust temperature response
-        System.out.println("Temperature adjustment was successful: " );
-        logger.info("Temperature adjustment was successful: " );
-
-        // Request to get current temperature
         CurrentTemperatureRequest currentTemperatureRequest = CurrentTemperatureRequest.newBuilder()
                 .setAreaId("Room1")
                 .build();
-        CurrentTemperatureResponse currentTemperatureResponse = stub.currentTemperature(currentTemperatureRequest);
-        // Printing the response
-        System.out.println("Temperature in Room: " + currentTemperatureResponse.getTemperature());
+        CurrentTemperatureResponse currentTemperatureResponse = climateControlStub.currentTemperature(currentTemperatureRequest);
+
+        System.out.println("Current temperature in Room: " + currentTemperatureResponse.getTemperature());
         System.out.println("Humidity in Room: " + currentTemperatureResponse.getHumidity());
         System.out.println("Air Quality Index in Room: " + currentTemperatureResponse.getAirQualityIndex());
 
-        logger.info("Temperature in Room: " + currentTemperatureResponse.getTemperature());
-        logger.info("Humidity in Room: " + currentTemperatureResponse.getHumidity());
-        logger.info("Air Quality Index in Room: " + currentTemperatureResponse.getAirQualityIndex());
-
-        // Request to get HVAC condition
         HVACConditionRequest hvacConditionRequest = HVACConditionRequest.newBuilder()
                 .setAreaId("Room1")
                 .build();
-        HVACConditionResponse hvacConditionResponse = stub.getHVACCondition(hvacConditionRequest);
-        // Printing the response
+        HVACConditionResponse hvacConditionResponse = climateControlStub.getHVACCondition(hvacConditionRequest);
+
         System.out.println("HVAC Status: " + hvacConditionResponse.getStatus());
         System.out.println("Current Temperature: " + hvacConditionResponse.getCurrentTemperature());
         System.out.println("Set Temperature: " + hvacConditionResponse.getSetTemperature());
         System.out.println("Error Code: " + hvacConditionResponse.getErrorCode());
 
-        logger.info("HVAC Status: " + hvacConditionResponse.getStatus());
-        logger.info("Current Temperature: " + hvacConditionResponse.getCurrentTemperature());
-        logger.info("Set Temperature: " + hvacConditionResponse.getSetTemperature());
-        logger.info("Error Code: " + hvacConditionResponse.getErrorCode());
+        // Shutdown the climate control channel
+        climateControlChannel.shutdown();
 
-        channel.shutdown();
+        // Create a channel for illumination management service
+        ManagedChannel illuminationManagementChannel = ManagedChannelBuilder.forAddress("localhost", 50055)
+                .usePlaintext()
+                .build();
+
+        // Create a blocking stub for illumination management service
+        IlluminationManagementServiceGrpc.IlluminationManagementServiceBlockingStub illuminationManagementStub =
+                IlluminationManagementServiceGrpc.newBlockingStub(illuminationManagementChannel);
+
+        // Call illumination management methods
+
+        ModifyLightIntensityRequest modifyRequest = ModifyLightIntensityRequest.newBuilder()
+                .setAreaId("Room1")
+                .setIntensity(5)
+                .build();
+        ModifyLightIntensityResponse modifyResponse = illuminationManagementStub.modifyLightIntensity(modifyRequest);
+
+        System.out.println("Light intensity modification was successful: " + modifyResponse.getSuccess());
+
+        LightStatusRequest statusRequest = LightStatusRequest.newBuilder()
+                .setAreaId("Room1")
+                .build();
+        LightStatusResponse statusResponse = illuminationManagementStub.lightStatus(statusRequest);
+
+        System.out.println("Light status in Room: " + (statusResponse.getStatus() ? "ON" : "OFF"));
+        System.out.println("Current light intensity in Room: " + statusResponse.getCurrentIntensity());
+
+        ChangeLightStatusRequest changeRequest = ChangeLightStatusRequest.newBuilder()
+                .setAreaId("Room1")
+                .setStatus(false)
+                .build();
+        ChangeLightStatusResponse changeResponse = illuminationManagementStub.changeLightStatus(changeRequest);
+
+        System.out.println("Light status change was successful: " + changeResponse.getSuccess());
+
+        // Shutdown the illumination management channel
+        illuminationManagementChannel.shutdown();
     }
 }
+
 
