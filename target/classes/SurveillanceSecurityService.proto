@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package intrusion_detection;
+
+// Message for alertIntrusion
+message AlertIntrusionRequest {
+    string AreaID = 1;
+    int32 AlertCode = 2;
+}
+
+message AlertIntrusionResponse {
+    string Status = 1;
+    int64 Timestamp = 2; // using int64 to represent epoch timestamp
+}
+
+// Message for continuousAlertFeed
+message ContinuousAlertFeedRequest {
+    string AreaID = 1;
+    int32 AlertCode = 2;
+}
+
+// Using the same response message as AlertIntrusionResponse
+
+// Message for batchAccessPermission
+message AccessPermissionRequest {
+    string Credentials = 1;
+    string AreaID = 2;
+}
+
+message AccessPermissionResponse {
+    string Status = 1;
+    string ErrorMessage = 2;
+}
+
+// Message for streamingFeed
+message StreamingFeedRequest {
+    string AreaID = 1;
+    string StreamCommand = 2; // can be 'start' or 'stop'
+}
+
+message StreamingResponse {
+    bytes VideoData = 1; // Video data represented as bytes
+    string ErrorMessage = 2;
+}
+
+service IntrusionDetectionService {
+    rpc alertIntrusion(AlertIntrusionRequest) returns (AlertIntrusionResponse);
+
+    rpc continuousAlertFeed(ContinuousAlertFeedRequest) returns (stream AlertIntrusionResponse);
+
+    rpc batchAccessPermission(stream AccessPermissionRequest) returns (AccessPermissionResponse);
+
+    rpc streamingFeed(StreamingFeedRequest) returns (stream StreamingResponse);
+}

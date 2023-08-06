@@ -1,4 +1,8 @@
 package building.climate_control;
+import building.climate_control.*;
+import building.climate_control.ClimateControl;
+
+import building.climate_control.BuildingServiceGrpc.BuildingServiceImplBase;
 
 import building.climate_control.BuildingServiceGrpc;
 import building.climate_control.BuildingServiceGrpc.BuildingServiceImplBase;
